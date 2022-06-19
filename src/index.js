@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchData();
   });
+  const url = "http://localhost:3000/characters";
   const characterBar = document.getElementById("character-bar");
   const characterName = document.getElementById("name");
   const characterImage = document.getElementById("image");
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Fetch data funtion
   function fetchData() {
-    fetch("http://localhost:3000/characters")
+    fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         renderCharacters(data);
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       votes: votecount,
     };
   
-    fetch("http://localhost:3000/characters", {
+    fetch(url, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",
@@ -60,3 +61,28 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((json) => console.log(json));
   });
+
+  const resetButton = document.querySelector('#reset-btn')
+
+resetButton.addEventListener('click', (e) => {
+
+    fetch(url)
+    .then(res => res.json())
+    .then(characters => {
+        //const charName = document.querySelector('#name')
+        const charID = characters.find(character => character.name === characterName.textContent)
+        fetch(`${url}/${charID.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                votes : '0'
+            })
+        })
+        .then(res => res.json())
+        .then(data => characterVotes.textContent = data.votes)
+    })
+
+})
+
