@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     data.forEach((data) => {
       const nameSpan = document.createElement("span");
       nameSpan.innerText = data.name;
-  
       characterBar.appendChild(nameSpan);
       nameSpan.addEventListener("click", () => {
         characterName.textContent = data.name;
@@ -61,11 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((json) => console.log(json));
   });
-
   const resetButton = document.querySelector('#reset-btn')
-
 resetButton.addEventListener('click', (e) => {
-
     fetch(url)
     .then(res => res.json())
     .then(characters => {
@@ -83,6 +79,5 @@ resetButton.addEventListener('click', (e) => {
         .then(res => res.json())
         .then(data => characterVotes.textContent = data.votes)
     })
-
 })
 
